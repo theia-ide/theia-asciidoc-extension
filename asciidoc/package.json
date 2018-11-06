@@ -1,0 +1,32 @@
+{
+  "name": "@theia/asciidoc",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.0",
+  "files": [
+    "lib",
+    "data",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "next",
+    "@theia/preview": "next",
+    "asciidoctor.js": "^1.5.7"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/asciidoc-frontend-module"
+    }
+  ]
+}
