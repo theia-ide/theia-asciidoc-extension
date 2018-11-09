@@ -1,0 +1,1 @@
+this folder contains some test files taken from https://gist.github.com/mojavelinux/4402636 to easily test the rendering of the various asciidoc features.
