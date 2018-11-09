@@ -1,13 +1,24 @@
+/********************************************************************************
+ * Copyright (C) 2018 TypeFox and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ********************************************************************************/
+
 import { PreviewHandler, RenderContentParams } from "@theia/preview/lib/browser/preview-handler";
 import URI from "@theia/core/lib/common/uri";
-import { MaybePromise } from "@theia/core";
-import { injectable } from "inversify";
-import * as AsciiDoc from "asciidoctor.js";
+import { injectable, inject } from "inversify";
+import { AsciidocRenderer } from "../common";
 
 @injectable()
 export class AsciiDocPreviewHandler implements PreviewHandler {
 
     readonly iconClass: string = 'asciidoc-icon file-icon';
+
+    constructor(@inject(AsciidocRenderer) protected renderer: AsciidocRenderer) {}
 
     canHandle(uri: URI): number {
         for (const ext of [".adoc", ".ad", ".asciidoc"]) {
@@ -18,8 +29,8 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
         return 0;
     }
 
-    renderContent(params: RenderContentParams): MaybePromise<HTMLElement | undefined> {
-        var html = new AsciiDoc().convert(params.content);
+    async renderContent(params: RenderContentParams): Promise<HTMLElement | undefined> {
+        var html = await this.renderer.render(params.content);
         var div = document.createElement('div');
         div.style.color = 'var(--theia-content-font-color0)';
         div.style.margin = '15px';

@@ -8,11 +8,17 @@
  *
  ********************************************************************************/
 
-export const ASCIIDOC_LANGUAGE_ID = 'asciidoc'
-export const ASCIIDOC_LANGUAGE_NAME = 'AsciiDoc (Asciidoctor)'
+import { injectable } from "inversify";
+import { AsciidocRenderer } from "../common";
+import * as AsciiDoc from "asciidoctor.js";
 
-export const asciidoc_service_path = '/services/asciidoc';
-export const AsciidocRenderer = Symbol('AsciidocRenderer');
-export interface AsciidocRenderer {
-    render(adoc: string): Promise<string>
+@injectable()
+export class AsciidocRendererImpl implements AsciidocRenderer {
+
+    private doc = new AsciiDoc();
+
+    async render(adoc: string): Promise<string> {
+        return this.doc.convert(adoc);
+    }
+
 }

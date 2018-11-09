@@ -29,7 +29,8 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/asciidoc-frontend-module"
+      "frontend": "lib/browser/asciidoc-frontend-module",
+      "backend": "lib/node/asciidoc-backend-module"
     }
   ]
 }
