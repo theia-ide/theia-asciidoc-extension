@@ -10,15 +10,33 @@
 
 import { injectable } from "inversify";
 import { AsciidocRenderer } from "../common";
-import * as AsciiDoc from "asciidoctor.js";
+import * as fs from "fs-extra";
+import * as path from 'path';
+import * as os from 'os';
+import { exec } from "child_process";
+import { Deferred } from "@theia/core/lib/common/promise-util";
 
 @injectable()
 export class AsciidocRendererImpl implements AsciidocRenderer {
 
-    private doc = new AsciiDoc();
-
     async render(adoc: string): Promise<string> {
-        return this.doc.convert(adoc);
+        const result = new Deferred<string>();
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'asciidoc-'));
+        const adocFile = path.join(dir, 'contents.adoc');
+        await fs.writeFile(adocFile, adoc);
+        exec('asciidoctor ' + adocFile + ' -s', async (err, stdout, stderr) => {
+            if (stderr || err) {
+                result.resolve(`
+                    <div>
+                        <h1>Error from Asciidoctor</h2>
+                        <p>${stderr || err}</p>
+                    </div>
+                `);
+            }
+            const contents = (await fs.readFile(path.join(dir, '/contents.html'))).toString();
+            result.resolve(contents);
+        });
+        return result.promise;
     }
 
 }
