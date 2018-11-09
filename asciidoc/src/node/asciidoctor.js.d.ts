@@ -8,11 +8,7 @@
  *
  ********************************************************************************/
 
-export const ASCIIDOC_LANGUAGE_ID = 'asciidoc'
-export const ASCIIDOC_LANGUAGE_NAME = 'AsciiDoc (Asciidoctor)'
-
-export const asciidoc_service_path = '/services/asciidoc';
-export const AsciidocRenderer = Symbol('AsciidocRenderer');
-export interface AsciidocRenderer {
-    render(adoc: string): Promise<string>
+declare module 'asciidoctor.js' {
+    const AsciiDoc: any
+    export = AsciiDoc;
 }
