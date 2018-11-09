@@ -1097,13 +1097,6 @@ asap@~2.0.3:
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
 
-asciidoctor.js@^1.5.7:
-  version "1.5.7"
-  resolved "https://registry.yarnpkg.com/asciidoctor.js/-/asciidoctor.js-1.5.7.tgz#e52980ee3a4f108af2bb4cded0f9c1fae33f023b"
-  integrity sha512-6AyUGa1TbRgtgeA4gH1MteEl650U2rPEaUHZVu1uphC0mfkr1H1GbHfhCL4fqaVmXVwgBePSumWPYM8KPuJhgg==
-  dependencies:
-    opal-runtime "1.0.10"
-
 asn1.js@^4.0.0:
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-4.10.1.tgz#b9c2bf5805f1e64aadeed6df3a2bfafb5a73f5a0"
@@ -4297,7 +4290,7 @@ glob-to-regexp@^0.3.0:
   resolved "https://registry.yarnpkg.com/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
   integrity sha1-jFoUlNIGbFcMw7/kSWF1rMTVAqs=
 
-glob@6.0.4, glob@^6.0.1:
+glob@^6.0.1:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/glob/-/glob-6.0.4.tgz#0f08860f6a155127b2fadd4f9ce24b1aab6e4d22"
   integrity sha1-DwiGD2oVUSey+t1PnOJLGqtuTSI=
@@ -6534,14 +6527,6 @@ oniguruma@^7.0.0:
   integrity sha512-zCsdNxTrrB4yVPMxhcIODGv1p4NVBu9WvsWnIGhMpu5djO4MQWXrC7YKjtza+OyoRqqgy27CqYWa1h5e2DDbig==
   dependencies:
     nan "^2.10.0"
-
-opal-runtime@1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/opal-runtime/-/opal-runtime-1.0.10.tgz#0c693c723f251dad39972903a9edc4f55d8b937f"
-  integrity sha512-1BRcHKR7aARLxo1Q4/vkLAO3OspRMTtVPYULJHlMZvXreNvkNAw9BFCx0xYJJqhksMDwClg42eDZCTmKxRCGHg==
-  dependencies:
-    glob "6.0.4"
-    xmlhttprequest "1.8.0"
 
 optimist@^0.6.1:
   version "0.6.1"
@@ -9522,11 +9507,6 @@ xdg-trashdir@^2.1.1:
     pify "^2.2.0"
     user-home "^2.0.0"
     xdg-basedir "^2.0.0"
-
-xmlhttprequest@1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
-  integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
 
 xtend@^4.0.0, xtend@~4.0.0, xtend@~4.0.1:
   version "4.0.1"
