@@ -24,22 +24,35 @@ export class AsciidocRendererImpl implements AsciidocRenderer {
     async render(originalURI: string, adoc: string): Promise<string> {
         const result = new Deferred<string>();
         const uri = new URI(originalURI);
-        const adocFile = FileUri.fsPath(uri.withPath(uri.path.toString().replace(uri.path.base, '.tmp-'+uri.path.base)));
-        await fs.writeFile(adocFile, adoc);
+        const basePath = FileUri.fsPath(uri.parent);
         const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'asciidoc-'));
-        const htmlFile = path.join(dir, 'output.html');
-        exec('asciidoctor ' + adocFile + ' ' + htmlFile + ' -s', async (err, stdout, stderr) => {
-            fs.remove(adocFile);
+        const inputFile = path.join(dir, uri.path.base);
+        await fs.writeFile(inputFile, adoc);
+        const outputFile = path.join(dir, uri.path.base + '.html');
+        const command = 'asciidoctor ' + inputFile + ' -o ' + outputFile + ' -B ' + basePath + ' -s';
+        console.log('Executing : ' + command);
+        exec(command, async (err, stdout, stderr) => {
+            fs.remove(inputFile);
+            let htmlResult = '';
             if (stderr || err) {
-                result.resolve(`
-                    <div>
+                htmlResult = `
+                    <div style="color: red;">
                         <h1>Error from Asciidoctor</h2>
-                        <p>${stderr || err}</p>
+                        ${(stderr || err)!.toString().split('\n').map(line => `<p/>${line}</p>`)}
                     </div>
-                `);
+                `;
             }
-            const contents = (await fs.readFile(htmlFile)).toString();
-            result.resolve(contents);
+            if (fs.existsSync(outputFile)) {
+                htmlResult += (await fs.readFile(outputFile)).toString();
+                fs.remove(outputFile);
+                htmlResult += `
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+                    <script>prettyPrint()</script>
+                `;
+
+            }
+            result.resolve(htmlResult);
         });
         return result.promise;
     }
