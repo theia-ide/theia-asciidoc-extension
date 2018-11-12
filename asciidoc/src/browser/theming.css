@@ -1,0 +1,3 @@
+.markdown-preview, .markdown-preview pre code {
+    color: var(--theia-content-font-color0) !important;
+}

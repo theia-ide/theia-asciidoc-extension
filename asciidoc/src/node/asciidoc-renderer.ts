@@ -45,12 +45,6 @@ export class AsciidocRendererImpl implements AsciidocRenderer {
             if (fs.existsSync(outputFile)) {
                 htmlResult += (await fs.readFile(outputFile)).toString();
                 fs.remove(outputFile);
-                htmlResult += `
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
-                    <script>prettyPrint()</script>
-                `;
-
             }
             result.resolve(htmlResult);
         });

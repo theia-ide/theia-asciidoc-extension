@@ -12,13 +12,17 @@ import { PreviewHandler, RenderContentParams } from "@theia/preview/lib/browser/
 import URI from "@theia/core/lib/common/uri";
 import { injectable, inject } from "inversify";
 import { AsciidocRenderer } from "../common";
+import * as hljs from 'highlight.js';
+import '../../src/browser/theming.css';
 
 @injectable()
 export class AsciiDocPreviewHandler implements PreviewHandler {
 
     readonly iconClass: string = 'asciidoc-icon file-icon';
 
-    constructor(@inject(AsciidocRenderer) protected renderer: AsciidocRenderer) {}
+    constructor(
+        @inject(AsciidocRenderer) protected renderer: AsciidocRenderer,
+    ) { }
 
     canHandle(uri: URI): number {
         for (const ext of [".adoc", ".ad", ".asciidoc"]) {
@@ -34,7 +38,15 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
         var div = document.createElement('div');
         div.classList.add('markdown-preview');
         div.innerHTML = html.trim();
+        this.applyPrettyPrinting(div);
         return div;
+    }
+
+    protected applyPrettyPrinting(previewElement: HTMLElement) {
+        var blocks = previewElement!.querySelectorAll('pre code');
+        for (const block of Array.from(blocks)) {
+            hljs.highlightBlock(block);
+        }
     }
 
 }
