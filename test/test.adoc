@@ -98,8 +98,8 @@ line two
 
   another definition, which can be literal (indented) or regular paragraph
 
-This should be a standalone paragraph, not grabbed by the definition list.
-
+This should be a standalone paragraph, not  grabbed by the definition list.
+ 
 [[nested]]
 * first level
 written on two lines
@@ -175,8 +175,7 @@ ____
 When you have eliminated all which is impossible, then whatever remains, however improbable, must be the truth.
 ____
 
-Getting Literal [[literally]]
------------------------------
+== Getting Literal [[literally]]
 
  Want to get literal? Just prefix a line with a space (just one will do).
 

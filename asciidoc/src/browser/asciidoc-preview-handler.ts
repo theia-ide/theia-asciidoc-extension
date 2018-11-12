@@ -12,6 +12,7 @@ import { PreviewHandler, RenderContentParams } from "@theia/preview/lib/browser/
 import URI from "@theia/core/lib/common/uri";
 import { injectable, inject } from "inversify";
 import { AsciidocRenderer } from "../common";
+import { PreviewLinkNormalizer } from "@theia/preview/lib/browser/preview-link-normalizer";
 import * as hljs from 'highlight.js';
 import '../../src/browser/theming.css';
 
@@ -22,6 +23,7 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
 
     constructor(
         @inject(AsciidocRenderer) protected renderer: AsciidocRenderer,
+        @inject(PreviewLinkNormalizer) protected readonly linkNormalizer: PreviewLinkNormalizer
     ) { }
 
     canHandle(uri: URI): number {
@@ -39,6 +41,7 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
         div.classList.add('markdown-preview');
         div.innerHTML = html.trim();
         this.applyPrettyPrinting(div);
+        this.translateLinks(params.originUri, div);
         return div;
     }
 
@@ -46,6 +49,13 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
         var blocks = previewElement!.querySelectorAll('pre code');
         for (const block of Array.from(blocks)) {
             hljs.highlightBlock(block);
+        }
+    }
+
+    protected translateLinks(documentUri: URI, previewElement: HTMLElement) {
+        var images = previewElement!.querySelectorAll('img');
+        for (const image of Array.from(images)) {
+            image.src = this.linkNormalizer.normalizeLink(documentUri, image.getAttribute('src')!);
         }
     }
 
