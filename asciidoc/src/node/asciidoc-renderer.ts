@@ -15,16 +15,21 @@ import * as path from 'path';
 import * as os from 'os';
 import { exec } from "child_process";
 import { Deferred } from "@theia/core/lib/common/promise-util";
+import URI from "@theia/core/lib/common/uri";
+import { FileUri } from "@theia/core/lib/node/file-uri";
 
 @injectable()
 export class AsciidocRendererImpl implements AsciidocRenderer {
 
-    async render(adoc: string): Promise<string> {
+    async render(originalURI: string, adoc: string): Promise<string> {
         const result = new Deferred<string>();
-        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'asciidoc-'));
-        const adocFile = path.join(dir, 'contents.adoc');
+        const uri = new URI(originalURI);
+        const adocFile = FileUri.fsPath(uri.withPath(uri.path.toString().replace(uri.path.base, '.tmp-'+uri.path.base)));
         await fs.writeFile(adocFile, adoc);
-        exec('asciidoctor ' + adocFile + ' -s', async (err, stdout, stderr) => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'asciidoc-'));
+        const htmlFile = path.join(dir, 'output.html');
+        exec('asciidoctor ' + adocFile + ' ' + htmlFile + ' -s', async (err, stdout, stderr) => {
+            fs.remove(adocFile);
             if (stderr || err) {
                 result.resolve(`
                     <div>
@@ -33,7 +38,7 @@ export class AsciidocRendererImpl implements AsciidocRenderer {
                     </div>
                 `);
             }
-            const contents = (await fs.readFile(path.join(dir, '/contents.html'))).toString();
+            const contents = (await fs.readFile(htmlFile)).toString();
             result.resolve(contents);
         });
         return result.promise;

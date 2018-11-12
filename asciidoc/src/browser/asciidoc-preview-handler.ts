@@ -30,7 +30,7 @@ export class AsciiDocPreviewHandler implements PreviewHandler {
     }
 
     async renderContent(params: RenderContentParams): Promise<HTMLElement | undefined> {
-        var html = await this.renderer.render(params.content);
+        var html = await this.renderer.render(params.originUri.toString(), params.content);
         var div = document.createElement('div');
         div.style.color = 'var(--theia-content-font-color0)';
         div.style.margin = '15px';
