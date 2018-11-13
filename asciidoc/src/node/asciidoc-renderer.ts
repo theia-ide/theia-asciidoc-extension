@@ -34,17 +34,17 @@ export class AsciidocRendererImpl implements AsciidocRenderer {
         exec(command, async (err, stdout, stderr) => {
             fs.remove(inputFile);
             let htmlResult = '';
-            if (stderr || err) {
-                htmlResult = `
-                    <div style="color: red;">
-                        <h1>Error from Asciidoctor</h2>
-                        ${(stderr || err)!.toString().split('\n').map(line => `<p/>${line}</p>`)}
-                    </div>
-                `;
-            }
             if (fs.existsSync(outputFile)) {
                 htmlResult += (await fs.readFile(outputFile)).toString();
                 fs.remove(outputFile);
+            }
+            if (stderr || err) {
+                htmlResult += `
+                    <div style="color: red;">
+                        <h3>Error from Asciidoctor</h2>
+                        ${(stderr || err)!.toString().split('\n').filter(l => l.trim().length > 1).map(line => `<p/>${line}</p>`)}
+                    </div>
+                `;
             }
             result.resolve(htmlResult);
         });
