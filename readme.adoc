@@ -1,6 +1,6 @@
 = Asciidoc Extension for Theia
 
-image:http://img.shields.io/badge/Gitpod-code%20now-blue.svg?longCache=true["Start Workspace", link="https://gitpod.io#https://github.com/theia-ide/theia-asciidoc-extension"]
+image:https://gitpod.io/button/open-in-gitpod.svg["Open in Gitpod", link="https://gitpod.io#https://github.com/theia-ide/theia-asciidoc-extension"]
 
 An extension for Theia, to support Asciidoc syntax coloring and rendering of previews.
 
